@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import apiClient from "@/app/api-client";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
   const [form, setForm] = useState({ userName: "", email: "", password: "" });
   const [message, setMessage] = useState("");
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +18,8 @@ export default function SignupForm() {
     e.preventDefault();
     try {
       const res = await apiClient.post("/api/v1/user", form);
-      setMessage(res.data.message || "Signup successful!");
+
+      router.push("/");
     } catch (err: any) {
       setMessage(err.response?.data?.message || "Something went wrong");
     }

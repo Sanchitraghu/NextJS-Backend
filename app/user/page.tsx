@@ -1,3 +1,5 @@
+// Server Component
+
 import apiClient from "../api-client";
 import { IUser } from "../types";
 
