@@ -1,3 +1,4 @@
+import { prisma } from "@/app/lib/prisma/prismaClient";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export const GET = async (req: NextApiRequest) => {
@@ -12,10 +13,21 @@ export const GET = async (req: NextApiRequest) => {
 };
 
 export const POST = async (req: Request) => {
-  const userDetails = await req.json();
+  try {
+    const userDetails = await req.json();
+    const newUser = await prisma.user.create({ data: userDetails });
 
-  return Response.json(
-    { message: "User Logged In Successfully" },
-    { status: 201 }
-  );
+    console.log(newUser);
+
+    return Response.json(
+      { message: "User Logged In Successfully" },
+      { status: 201 }
+    );
+  } catch (err: any) {
+    console.log(err.message, "Error in Creating User");
+    return Response.json(
+      { message: "Error in Creating User" },
+      { status: 500 }
+    );
+  }
 };
