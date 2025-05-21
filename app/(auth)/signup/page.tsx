@@ -3,6 +3,7 @@
 import { useState } from "react";
 import apiClient from "@/app/api-client";
 import { useRouter } from "next/navigation";
+import { signUpUser } from "@/app/actions/user";
 
 export default function SignupForm() {
   const [form, setForm] = useState({ userName: "", email: "", password: "" });
@@ -16,13 +17,13 @@ export default function SignupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const res = await apiClient.post("/api/v1/user", form);
+    // try {
+    //   const res = await apiClient.post("/api/v1/user", form);
 
-      router.push("/");
-    } catch (err: any) {
-      setMessage(err.response?.data?.message || "Something went wrong");
-    }
+    //   router.push("/");
+    // } catch (err: any) {
+    //   setMessage(err.response?.data?.message || "Something went wrong");
+    // }
   };
 
   return (
@@ -58,6 +59,10 @@ export default function SignupForm() {
         />
         <button
           type="submit"
+          onClick={async () => {
+            const res = await signUpUser(form);
+            console.log(res);
+          }}
           className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
         >
           Sign Up
